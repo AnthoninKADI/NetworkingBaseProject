@@ -18,48 +18,66 @@ struct Message
 int main(int argc, char* argv[])
 {
 
-	string typing;
-	const int width = 500, height = 750;
-	InitWindow(width, height, "My first chat window");
+	const int width = 400, height = 300;
+	InitWindow(width, height, "Login Window");
 	SetTargetFPS(60);
 
-	vector<Message> log{Message{false, "Waiting for someone to talk..."}};
+	string host;
+	string s_port;
+	string name;
+	int port = 4242;
+	bool ipSelected = false;
+	bool hostComplete = false;
 	while (!WindowShouldClose())
 	{
 		BeginDrawing();
 		ClearBackground(GRAY);
-		DrawText("Welcome to ChArtFX", 220, 15, 25, WHITE);
-		DrawRectangle(20, 50, width - 40, height - 150, DARKGRAY);
-		DrawRectangle(20, height - 90, width - 40, 50, LIGHTGRAY);
+		DrawText("Login", 155, 10, 40, WHITE); // Login Text
+		DrawText("ip", 25, 90, 25, WHITE); // Ip Adress
+		DrawText("port", 10, 160, 25, WHITE); // Port
+		DrawText("name", 10, 230, 25, WHITE); // Name
+
+		DrawRectangle(70, 90, width - 100, 25, DARKGRAY);
+		DrawRectangle(70, 160, width - 100, 25, DARKGRAY);
+		DrawRectangle(70, 230, width - 100, 25, DARKGRAY);
 
 		int inputChar = GetCharPressed();
+
 		if (inputChar != 0)
 		{
-			typing += static_cast<char>(inputChar);
-		}
-		if (typing.size() > 0)
-		{
-			DrawText(typing.c_str(), 30, height - 75, 25, DARKBLUE);
-		}
+			if (!hostComplete) host += static_cast<char>(inputChar);
+			else s_port += static_cast<char>(inputChar);
 
-		for (int msg = 0; msg < log.size(); msg++)
-		{
-			DrawText(log[msg].content.c_str(), 30, 75 + (msg * 30), 15, log[msg].fromMe ? SKYBLUE : PURPLE);
 		}
-
-		if (typing.size() > 0)
+		if (IsKeyPressed(KEY_ENTER))
 		{
-			if (IsKeyPressed(KEY_BACKSPACE)) typing.pop_back();
-			else if (IsKeyPressed(KEY_ENTER))
+			if (!hostComplete)
 			{
-				//Send the message typing to the server here!
-				log.push_back(Message{ true, typing });
-				typing.clear();
+				hostComplete = true;
+				cout << hostComplete << endl;
 			}
-
-			DrawText(typing.c_str(), 30, height - 75, 25, DARKBLUE);
+			else
+			{
+				port = stoi(s_port);
+				break;
+			}
 		}
+		else if (IsKeyPressed(KEY_BACKSPACE))
+		{
+			if (hostComplete && !s_port.empty()) s_port.pop_back();
+			else if (!host.empty())  host.pop_back();
+		}
+		if (!host.empty())
+		{
+			DrawText(host.c_str(), 75, 90, 25, WHITE);
+		}
+		if (!s_port.empty())
+		{
+			DrawText(s_port.c_str(), 75, 160, 25, WHITE);
+		}
+
 		EndDrawing();
+
 	}
 	CloseWindow();
 
@@ -69,13 +87,7 @@ int main(int argc, char* argv[])
 	}
 
 	IPaddress ip;
-	string host;
 
-	int port;
-	cout << "Enter the adreses to conenct: ";
-	cin >> host;
-	cout << "Enter the port number: ";
-	cin >> port;
 
 	if (SDLNet_ResolveHost(&ip, host.c_str(), port) == -1)
 	{
@@ -90,6 +102,48 @@ int main(int argc, char* argv[])
 		SDLNet_Quit();
 		return 1;
 	}
+
+	string typing;
+	const int Mwidth = 500, Mheight = 750;
+	InitWindow(Mwidth, Mheight, "ChatBox Window");
+	SetTargetFPS(60);
+
+	vector<Message> log{Message{false, "Welcome to the ChatBox"}};
+	while (!WindowShouldClose())
+	{
+		BeginDrawing();
+		ClearBackground(GRAY);
+		DrawText("Welcome to ChatBox", 150, 15, 25, WHITE);
+		DrawRectangle(20, 50, Mwidth - 40, Mheight - 150, DARKGRAY);
+		DrawRectangle(20, Mheight - 90, Mwidth - 40, 50, LIGHTGRAY);
+
+		int inputChar = GetCharPressed();
+		if (inputChar != 0)
+		{
+			typing += static_cast<char>(inputChar);
+		}
+		if (!typing.empty())
+		{
+			if (IsKeyPressed(KEY_BACKSPACE)) typing.pop_back();
+			else if (IsKeyPressed(KEY_ENTER))
+			{
+				log.push_back(Message{ true,typing });
+				typing.clear();
+			}
+			DrawText(typing.c_str(), 30, Mheight - 75, 25, DARKBLUE);
+		}
+
+		for (int msg = 0; msg < log.size(); msg++)
+		{
+			DrawText(log[msg].content.c_str(), 30, 75 + (msg * 30), 15, log[msg].fromMe ? SKYBLUE : PURPLE);
+		}
+
+		EndDrawing();
+
+	}
+	CloseWindow();
+
+
 
 	string message;
 
@@ -117,6 +171,6 @@ int main(int argc, char* argv[])
 	cout << "Sent " << bytesSent << " bytes to the server !" << endl;
 	SDLNet_TCP_Close(clientSocket);
 	SDLNet_Quit();
-	cout << "Thank you for using ChArtFX !\n";
+	cout << "Thank you for using ChatBox !\n";
 	return 0;
 }
