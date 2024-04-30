@@ -1,4 +1,4 @@
 ﻿  SimpleClient.cpp
 C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\SimpleClient.cpp(150,95): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\SimpleClient.cpp(168,99): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\SimpleClient.cpp(167,99): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   NetworkingBaseProject.vcxproj -> C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\x64\Debug\SimpleClient.exe

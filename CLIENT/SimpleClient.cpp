@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
             else if (!name.empty())
             {
                 nameComplete = true;
-                break; // Quitte la boucle une fois que le nom est entré
+                break;
             }
         }
         else if (IsKeyPressed(KEY_BACKSPACE))
@@ -157,7 +157,6 @@ int main(int argc, char* argv[])
                 }
                 // Add the message to the chat log
                 log.push_back(Message{ name, typing });
-                // Clear typing after sending
                 typing.clear();
             }
             DrawText(typing.c_str(), 30, Mheight - 75, 25, BLACK);
