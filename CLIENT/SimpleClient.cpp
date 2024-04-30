@@ -127,11 +127,6 @@ int main(int argc, char* argv[])
 
     vector<Message> log{Message{"Welcome to the ChatBox"}};
 
-    if (!typing.empty())
-        DrawText("Welcome to ChatBox", 150, 15, 25, SKYBLUE);
-    else
-        DrawText("Welcome to ChatBox", 150, 15, 25, WHITE);
-
     while (!WindowShouldClose())
     {
         BeginDrawing();
@@ -151,7 +146,18 @@ int main(int argc, char* argv[])
                 typing.pop_back();
             else if (IsKeyPressed(KEY_ENTER))
             {
-                log.push_back(Message{name, typing});
+                // Send message to the server
+                int bytesSent = SDLNet_TCP_Send(clientSocket, typing.c_str(), typing.length() + 1);
+                if (bytesSent < typing.length() + 1)
+                {
+                    cerr << "SDLNet TCP Send error: " << SDLNet_GetError() << endl;
+                    SDLNet_TCP_Close(clientSocket);
+                    SDLNet_Quit();
+                    return 1;
+                }
+                // Add the message to the chat log
+                log.push_back(Message{ name, typing });
+                // Clear typing after sending
                 typing.clear();
             }
             DrawText(typing.c_str(), 30, Mheight - 75, 25, BLACK);
@@ -160,38 +166,13 @@ int main(int argc, char* argv[])
         for (size_t i = 0; i < log.size(); i++)
         {
             DrawText(TextFormat("[%s] %s", log[i].sender.c_str(), log[i].content.c_str()), 30, 75 + (i * 30), 15, SKYBLUE);
-
         }
 
         EndDrawing();
     }
     CloseWindow();
 
-	string message;
-	cout << "Send a message : " << endl;
-	cin.clear();
-	getline(cin, message);
-
-	int bytesSent = SDLNet_TCP_Send(clientSocket, message.c_str(), message.length() + 1);
-	if (bytesSent < message.length() + 1)
-	{
-		cerr << "SDLNet TCP Send error: " << SDLNet_GetError() << endl;
-		SDLNet_TCP_Close(clientSocket);
-		SDLNet_Quit();
-		return 1;
-	}
-	char buffer[1024];
-	int bytesRead = SDLNet_TCP_Recv(clientSocket, buffer, sizeof(buffer));
-	if (bytesRead <= 0)
-	{
-		cerr << "SDLNet TCP Recv error: " << SDLNet_GetError() << endl;
-		SDLNet_Quit();
-		return 1;
-	}
-	cout << "Incoming response: " << buffer << endl;
-	cout << "Sent " << bytesSent << " bytes to the server !" << endl;
-	SDLNet_TCP_Close(clientSocket);
-	SDLNet_Quit();
-	cout << "Thank you for using ChatBox !\n";
-	return 0;
+    SDLNet_TCP_Close(clientSocket);
+    SDLNet_Quit();
+    return 0;
 }
