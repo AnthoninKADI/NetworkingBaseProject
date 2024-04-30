@@ -15,11 +15,20 @@ vector<ClientInfo> clients;
 mutex mtx;
 
 void HandleClient(TCPsocket clientSocket) {
+
+    char nameBuffer[1024];
+    int bytesReadName = SDLNet_TCP_Recv(clientSocket, nameBuffer, sizeof(nameBuffer));
+    string clientName(nameBuffer);
+    if (bytesReadName > 0)
+    {
+        cout << "Client " << clientName << " joined the server\n";
+    }
+
     while (true) {
         char buffer[1024];
         int bytesRead = SDLNet_TCP_Recv(clientSocket, buffer, sizeof(buffer));
         if (bytesRead > 0) {
-            cout << "Incoming message from client: " << buffer << endl;
+            cout << clientName << " : " << buffer << '\n';
 
             // Broadcast the message to all clients
             string message = string(buffer);

@@ -121,6 +121,17 @@ int main(int argc, char* argv[])
     }
 
     string typing;
+
+    // user's name --> server
+    int bytesSent = SDLNet_TCP_Send(clientSocket, name.c_str(), name.length() + 1);
+    if (bytesSent < name.length() + 1)
+    {
+        cerr << "SDLNet TCP Send error : " << SDLNet_GetError() << '\n';
+        SDLNet_TCP_Close(clientSocket);
+        SDLNet_Quit();
+        return 1;
+    }
+
     const int Mwidth = 500, Mheight = 750;
     InitWindow(Mwidth, Mheight, "ChatBox Window");
     SetTargetFPS(60);
@@ -132,6 +143,7 @@ int main(int argc, char* argv[])
         BeginDrawing();
         ClearBackground(GRAY);
         DrawText("Welcome to ChatBox", 150, 15, 25, WHITE);
+        DrawText("by Anthonin", 10, 730, 10, WHITE); // Copyright
         DrawRectangle(20, 50, Mwidth - 40, Mheight - 150, DARKGRAY);
         DrawRectangle(20, Mheight - 90, Mwidth - 40, 50, WHITE);
 
