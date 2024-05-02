@@ -21,7 +21,7 @@ void HandleClient(TCPsocket clientSocket) {
     string clientName(nameBuffer);
     if (bytesReadName > 0)
     {
-        cout << "Client " << clientName << " joined the server\n";
+        cout << clientName << " joined the server\n";
     }
 
     while (true) {
@@ -53,7 +53,7 @@ void HandleClient(TCPsocket clientSocket) {
                     return client.socket == clientSocket;
                     }), clients.end());
             }
-            cout << "Client disconnected." << endl;
+            cout << " Client disconnected." << endl;
             break;
         }
     }
@@ -61,20 +61,20 @@ void HandleClient(TCPsocket clientSocket) {
 
 int main(int argc, char* argv[]) {
     if (SDLNet_Init() == -1) {
-        cerr << "SDLNet Initialization error: " << SDLNet_GetError() << endl;
+        cerr << " SDLNet Initialization error: " << SDLNet_GetError() << endl;
         return 1;
     }
 
     IPaddress ip;
     if (SDLNet_ResolveHost(&ip, nullptr, 4242) == -1) {
-        cerr << "Resolve Host error: " << SDLNet_GetError() << endl;
+        cerr << " Resolve Host error: " << SDLNet_GetError() << endl;
         SDLNet_Quit();
         return 1;
     }
 
     TCPsocket serverSocket = SDLNet_TCP_Open(&ip);
     if (!serverSocket) {
-        cerr << "TCP Open error: " << SDLNet_GetError() << endl;
+        cerr << " TCP Open error: " << SDLNet_GetError() << endl;
         SDLNet_Quit();
         return 1;
     }
@@ -90,8 +90,6 @@ int main(int argc, char* argv[]) {
                 lock_guard<mutex> lock(mtx);
                 clients.push_back(clientInfo);
             }
-
-            cout << "Client connected." << endl;
         }
     }
 

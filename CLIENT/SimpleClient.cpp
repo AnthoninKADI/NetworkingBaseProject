@@ -15,14 +15,13 @@ struct Message
 int main(int argc, char* argv[])
 {
     const int width = 400, height = 300;
-    InitWindow(width, height, "Login Window");
+    InitWindow(width, height, "Connexion");
     SetTargetFPS(60);
 
-    string host;
+    string host = "localhost";
     string s_port;
     string name;
     int port = 4242;
-    bool hostComplete = false;
     bool nameComplete = false;
     bool portComplete = false;
 
@@ -31,11 +30,11 @@ int main(int argc, char* argv[])
         BeginDrawing();
         ClearBackground(DARKGRAY);
         DrawText("Login", 155, 10, 40, WHITE); // Login Text
-        DrawText("ip", 25, 90, 25, WHITE);    // Ip Adress
+        DrawText("Server : ", 10, 90, 25, WHITE); // Server Text
+        DrawText(host.c_str(), 130, 90, 25, WHITE); // Host Text
         DrawText("port", 10, 160, 25, WHITE); // Port
         DrawText("name", 10, 230, 25, WHITE); // Name
 
-        DrawRectangle(70, 90, width - 100, 25, WHITE);
         DrawRectangle(70, 160, width - 100, 25, WHITE);
         DrawRectangle(70, 230, width - 100, 25, WHITE);
 
@@ -43,11 +42,7 @@ int main(int argc, char* argv[])
 
         if (inputChar != 0)
         {
-            if (!hostComplete)
-            {
-                host += static_cast<char>(inputChar);
-            }
-            else if (!portComplete)
+            if (!portComplete)
             {
                 s_port += static_cast<char>(inputChar);
             }
@@ -58,11 +53,7 @@ int main(int argc, char* argv[])
         }
         if (IsKeyPressed(KEY_ENTER))
         {
-            if (!hostComplete)
-            {
-                hostComplete = true;
-            }
-            else if (!portComplete)
+            if (!portComplete)
             {
                 port = stoi(s_port);
                 portComplete = true;
@@ -75,16 +66,8 @@ int main(int argc, char* argv[])
         }
         else if (IsKeyPressed(KEY_BACKSPACE))
         {
-            if (hostComplete && !name.empty())
-                name.pop_back();
-            else if (portComplete && !s_port.empty())
+            if (portComplete && !s_port.empty())
                 s_port.pop_back();
-            else if (!host.empty())
-                host.pop_back();
-        }
-        if (!host.empty())
-        {
-            DrawText(host.c_str(), 75, 90, 25, BLACK);
         }
         if (!s_port.empty())
         {
