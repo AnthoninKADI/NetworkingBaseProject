@@ -1,12 +1,5 @@
 ﻿  SimpleClient.cpp
-C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\SimpleClient.cpp(109,79): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\SimpleClient.cpp(145,95): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\SimpleClient.cpp(162,99): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-  LINK : C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\x64\Debug\SimpleClient.exe not found or not built by the last incremental link; performing full link
-raylib.lib(rcore.obj) : warning LNK4099: PDB '' was not found with 'raylib.lib(rcore.obj)' or at ''; linking object as if no debug info
-raylib.lib(rshapes.obj) : warning LNK4099: PDB '' was not found with 'raylib.lib(rshapes.obj)' or at ''; linking object as if no debug info
-raylib.lib(rtext.obj) : warning LNK4099: PDB '' was not found with 'raylib.lib(rtext.obj)' or at ''; linking object as if no debug info
-raylib.lib(utils.obj) : warning LNK4099: PDB '' was not found with 'raylib.lib(utils.obj)' or at ''; linking object as if no debug info
-raylib.lib(rtextures.obj) : warning LNK4099: PDB '' was not found with 'raylib.lib(rtextures.obj)' or at ''; linking object as if no debug info
-raylib.lib(rglfw.obj) : warning LNK4099: PDB '' was not found with 'raylib.lib(rglfw.obj)' or at ''; linking object as if no debug info
+C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\SimpleClient.cpp(127,79): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\SimpleClient.cpp(163,95): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\SimpleClient.cpp(198,99): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   NetworkingBaseProject.vcxproj -> C:\Users\anthonin.kadi\Documents\GitHub\NetworkingBaseProject\CLIENT\x64\Debug\SimpleClient.exe

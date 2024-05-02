@@ -4,6 +4,7 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <algorithm>
 using namespace std;
 
 struct ClientInfo {
@@ -31,7 +32,7 @@ void HandleClient(TCPsocket clientSocket) {
             cout << clientName << " : " << buffer << '\n';
 
             // Broadcast the message to all clients
-            string message = string(buffer);
+            string message = clientName + ": " + string(buffer);
             {
                 lock_guard<mutex> lock(mtx);
                 for (auto& client : clients) {

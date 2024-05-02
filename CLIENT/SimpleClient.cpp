@@ -103,6 +103,23 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    SDLNet_SocketSet clientSocketSet = SDLNet_AllocSocketSet(1); 
+    if (!clientSocketSet)
+    {
+        cerr << "SDLNet_AllocSocketSet error: " << SDLNet_GetError() << endl;
+        SDLNet_TCP_Close(clientSocket);
+        SDLNet_Quit();
+        return 1;
+    }
+
+    if (SDLNet_TCP_AddSocket(clientSocketSet, clientSocket) == -1)
+    {
+        cerr << "SDLNet_TCP_AddSocket error: " << SDLNet_GetError() << endl;
+        SDLNet_TCP_Close(clientSocket);
+        SDLNet_Quit();
+        return 1;
+    }
+
     string typing;
 
     // user's name --> server
@@ -150,11 +167,27 @@ int main(int argc, char* argv[])
                     SDLNet_Quit();
                     return 1;
                 }
-                // Add the message to the chat log
                 log.push_back(Message{ name, typing });
                 typing.clear();
             }
             DrawText(typing.c_str(), 30, Mheight - 75, 25, BLACK);
+        }
+
+        // client chat into chat box
+        if (SDLNet_CheckSockets(clientSocketSet, 0) > 0 && SDLNet_SocketReady(clientSocket))
+        {
+            char buffer[1024];
+            int bytesRead = SDLNet_TCP_Recv(clientSocket, buffer, sizeof(buffer));
+            if (bytesRead > 0)
+            {
+                string receivedMessage(buffer);
+                log.push_back(Message{ name, receivedMessage }); // put name client in chat box
+            }
+            else
+            {
+                cerr << "Lost connection to server." << endl;
+                break;
+            }
         }
 
         for (size_t i = 0; i < log.size(); i++)
@@ -167,6 +200,7 @@ int main(int argc, char* argv[])
     CloseWindow();
 
     SDLNet_TCP_Close(clientSocket);
+    SDLNet_FreeSocketSet(clientSocketSet); 
     SDLNet_Quit();
     return 0;
 }
